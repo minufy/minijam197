@@ -1,0 +1,113 @@
+local Mouse = Object:new()
+local Particle = require("objects.particle")
+
+local damp = 0.9
+
+function Mouse:init()
+    self.x = 0
+    self.y = 0
+    self.w = 0
+    self.h = 0
+
+    self.r = 10
+    self.type = "circle"
+
+    self.tags = {
+        mouse = true,
+    }
+end
+
+function Mouse:update(dt)
+    self.x = self.x+(Res:getX()-self.x)*damp*dt
+    self.y = self.y+(Res:getY()-self.y)*damp*dt
+    
+    local x = math.floor(Res:getX())
+    local y = math.floor(Res:getY())
+
+    local col = self:col()
+    if Current.editing then
+        local dr = 1
+        if Input.ctrl.down then
+            dr = 4
+        end
+        if Input.wheel.up then
+            self.r = self.r+dr
+        end
+        if Input.wheel.down then
+            self.r = self.r-dr
+        end
+        if Input.circle.pressed then
+            self.type = "circle"
+        end
+        if Input.goal.pressed then
+            self.type = "goal"
+        end
+        if Input.start.pressed then
+            self.type = "start"
+        end
+        if Input.mb[2].pressed then
+            if #col > 0 then
+                Current:edit_remove(col[1].x, col[1].y)
+            end
+        end
+        if Input.mb[1].pressed then
+            Current:edit_add(x, y, self.r, self.type)
+        end
+    else
+        for i, o in ipairs(col) do
+            if o.tags.circle then
+                self:die()
+            elseif o.tags.goal then
+                -- self:goal()
+            elseif o.tags.start then
+                self:restart()
+            end
+        end
+        if self.x < 0 or self.x > Res.w or self.y < 0 or self.y > Res.h then
+            self:die()
+        end
+    end
+end
+
+function Mouse:die()
+    if not self.dead then
+        for _ = 1, 5 do
+            Current:add(Particle, self.x, self.y, math.random(-20, 20), math.random(-20, 20), math.random(4, 10))
+        end
+        self.dead = true
+        Camera:set_shake(2)
+    end
+end
+
+function Mouse:restart()
+    if self.dead then
+        self.dead = false
+        Camera:set_shake(2)
+    end
+end
+
+function Mouse:col()
+    local found = {}
+    for _, other in ipairs(Current.objects) do
+        if other.tags.mouse_col then
+            if self ~= other and Dist(self, other, other.r+2) then
+                table.insert(found, other)
+            end
+        end
+    end
+    return found
+end
+
+
+function Mouse:draw()
+    love.graphics.circle("fill", self.x, self.y, 3)
+    if Current.editing then
+        love.graphics.setColor(1, 1, 1, 0.4)
+        love.graphics.setLineWidth(2)
+        love.graphics.circle("line", self.x, self.y, self.r)
+        love.graphics.print(self.type, self.x, self.y)
+    end
+    ResetColor()
+end
+
+return Mouse
