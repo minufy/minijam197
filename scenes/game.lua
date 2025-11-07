@@ -3,11 +3,17 @@ local lume = require("modules.lume")
 local Game = {}
 
 local Mouse = require("objects.mouse")
-local types = {
-    circle = require("objects.circle"),
-    goal = require("objects.goal"),
-    start = require("objects.start"),
+TYPES = {
+    "circle",
+    "goal",
+    "start",
+    "on",
+    "off"
 }
+local types = {}
+for i, type in ipairs(TYPES) do
+    types[type] = require("objects."..type)
+end
 
 function Game:add(object, ...)
     local o = object:new()
@@ -16,7 +22,8 @@ function Game:add(object, ...)
     return o
 end
 
-local timer = 4*60
+local timer = 3*60
+local on_timer = 0.6*60
 
 function Game:init()
     self.objects = {}
@@ -25,6 +32,8 @@ function Game:init()
     self.editing = false
 
     self.timer = timer
+    self.on_timer = on_timer
+    self.on = false
 
     self.level_index = 1
     self:load_level()
@@ -46,12 +55,26 @@ function Game:update(dt)
         end
     end
     
-    if not self.editing then
+    if self.editing then
+        if Input.right.pressed then
+            self.level_index = self.level_index+1
+            self:load_level()
+        end
+        if Input.left.pressed then
+            self.level_index = self.level_index-1
+            self:load_level()
+        end
+    else
         if not self.mouse.dead then
             self.timer = self.timer-dt
+            self.on_timer = self.on_timer-dt
         end
         if self.timer <= 0 then
             self.mouse:die()
+        end
+        if self.on_timer <= 0 then
+            self.on_timer = on_timer
+            self.on = not self.on
         end
     end
 

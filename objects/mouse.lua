@@ -36,14 +36,10 @@ function Mouse:update(dt)
         if Input.wheel.down then
             self.r = self.r-dr
         end
-        if Input.circle.pressed then
-            self.type = "circle"
-        end
-        if Input.goal.pressed then
-            self.type = "goal"
-        end
-        if Input.start.pressed then
-            self.type = "start"
+        for i, type in ipairs(TYPES) do
+            if Input[type].pressed then
+                self.type = type
+            end
         end
         if Input.mb[2].pressed then
             if #col > 0 then
@@ -55,7 +51,7 @@ function Mouse:update(dt)
         end
     else
         for i, o in ipairs(col) do
-            if o.tags.circle then
+            if o.tags.circle or o.tags.on and Current.on or o.tags.off and not Current.on then
                 self:die()
             elseif o.tags.goal then
                 self:goal()

@@ -14,7 +14,11 @@ function Start:init(x, y, r)
 end
 
 function Start:draw()
-    love.graphics.setColor(Alpha(COLOR.LIGHT), 0.4)
+    love.graphics.setColor(COLOR.LIGHT)
+    if Current.mouse.dead then
+        local s = "restart"
+        love.graphics.print(s, self.x-Font:getWidth(s)/2, self.y-20)
+    end
     love.graphics.circle("fill", self.x, self.y, self.r+math.sin(love.timer.getTime()*2)*0.3)
     ResetColor()
 end
