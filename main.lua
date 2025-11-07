@@ -17,9 +17,9 @@ function love.load()
     TILE_SIZE = 32
 
     COLOR = {}
-    COLOR.LIGHT = rgb(255, 211, 195)
-    COLOR.HI = rgb(223, 31, 98)
-    COLOR.BG = rgb(118, 26, 0)
+    COLOR.LIGHT = rgb(255, 243, 243)
+    COLOR.HI = rgb(160, 124, 255)
+    COLOR.BG = rgb(44, 44, 42)
 
     Res:init()
     SM:init("game")

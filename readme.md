@@ -1,4 +1,4 @@
 ## credits
 - [Galmuri9](https://quiple.dev/galmuri)
 - [lume](https://github.com/rxi/lume)
-- [palette](https://lospec.com/palette-list/bone-apple-tea)
+- [palette](https://lospec.com/palette-list/1bit-styx)

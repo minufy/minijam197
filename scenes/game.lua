@@ -91,10 +91,10 @@ function Game:update(dt)
 end
 
 function Game:draw_lines()
-    love.graphics.setColor(0.1, 0.1, 0.1, 0.1)
+    love.graphics.setColor(1, 1, 1, 0.02)
     local mx = love.timer.getTime()*15%TILE_SIZE*2
     for x = -1, Res.w/TILE_SIZE do
-        love.graphics.setLineWidth(TILE_SIZE*2)
+        love.graphics.setLineWidth(TILE_SIZE)
         local nx = x*TILE_SIZE*2-Res.w/2
         love.graphics.line(nx+Res.h-mx, -TILE_SIZE, nx-TILE_SIZE-mx, Res.h+TILE_SIZE)
     end
@@ -102,7 +102,7 @@ function Game:draw_lines()
 end
 
 function Game:draw()
-    love.graphics.setColor(rgba(131, 28, 54, 1))
+    love.graphics.setColor(COLOR.BG)
     love.graphics.rectangle("fill", 0, 0, Res.w, Res.h)
     ResetColor()
     self:draw_lines()
