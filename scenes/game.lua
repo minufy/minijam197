@@ -41,6 +41,7 @@ end
 
 function Game:reset_timer()
     self.timer = timer
+    self.on_timer = on_timer
 end
 
 function Game:update(dt)
