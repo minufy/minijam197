@@ -16,14 +16,22 @@ function Game:add(object, ...)
     return o
 end
 
+local timer = 4*60
+
 function Game:init()
     self.objects = {}
     self.mouse = Mouse:new()
     self.mouse:init()
     self.editing = false
 
+    self.timer = timer
+
     self.level_index = 1
     self:load_level()
+end
+
+function Game:reset_timer()
+    self.timer = timer
 end
 
 function Game:update(dt)
@@ -35,6 +43,15 @@ function Game:update(dt)
             if Input.save.pressed then
                 self:edit_save()
             end
+        end
+    end
+    
+    if not self.editing then
+        if not self.mouse.dead then
+            self.timer = self.timer-dt
+        end
+        if self.timer <= 0 then
+            self.mouse:die()
         end
     end
 
@@ -50,10 +67,22 @@ function Game:update(dt)
     self.mouse:update(dt)
 end
 
+function Game:draw_lines()
+    love.graphics.setColor(0.1, 0.1, 0.1, 0.1)
+    local mx = love.timer.getTime()*15%TILE_SIZE*2
+    for x = -1, Res.w/TILE_SIZE do
+        love.graphics.setLineWidth(TILE_SIZE*2)
+        local nx = x*TILE_SIZE*2-Res.w/2
+        love.graphics.line(nx+Res.h-mx, -TILE_SIZE, nx-TILE_SIZE-mx, Res.h+TILE_SIZE)
+    end
+    ResetColor()
+end
+
 function Game:draw()
     love.graphics.setColor(rgba(131, 28, 54, 1))
     love.graphics.rectangle("fill", 0, 0, Res.w, Res.h)
     ResetColor()
+    self:draw_lines()
     
     Camera:start()
     -- table.sort(self.objects, function (a, b)
@@ -65,6 +94,10 @@ function Game:draw()
         end
     end
     self.mouse:draw()
+
+    love.graphics.setColor(COLOR.LIGHT)
+    love.graphics.rectangle("fill", 0, 0, self.timer/timer*Res.w, 3)
+    ResetColor()
 
     Camera:stop()
 end
@@ -95,6 +128,11 @@ function Game:edit_save()
     else
         print(err)
     end
+end
+
+function Game:next()
+    self.level_index = self.level_index+1
+    self:load_level()
 end
 
 function Game:load_level()

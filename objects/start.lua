@@ -5,7 +5,7 @@ function Start:init(x, y, r)
     self.y = y
     self.w = 0
     self.h = 0
-    self.r = 10
+    self.r = 6
 
     self.tags = {
         start = true,
@@ -14,8 +14,8 @@ function Start:init(x, y, r)
 end
 
 function Start:draw()
-    love.graphics.setColor(1, 0, 1, 0.4)
-    love.graphics.circle("fill", self.x, self.y, self.r)
+    love.graphics.setColor(Alpha(COLOR.LIGHT), 0.4)
+    love.graphics.circle("fill", self.x, self.y, self.r+math.sin(love.timer.getTime()*2)*0.3)
     ResetColor()
 end
 

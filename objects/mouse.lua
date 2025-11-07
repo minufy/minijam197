@@ -58,7 +58,7 @@ function Mouse:update(dt)
             if o.tags.circle then
                 self:die()
             elseif o.tags.goal then
-                -- self:goal()
+                self:goal()
             elseif o.tags.start then
                 self:restart()
             end
@@ -69,20 +69,35 @@ function Mouse:update(dt)
     end
 end
 
+function Mouse:goal()
+    if not self.dead then
+        Current:next()
+        Camera:set_shake(2)
+        for _ = 1, 5 do
+            Current:add(Particle, self.x, self.y, math.random(-20, 20), math.random(-20, 20), math.random(10, 16))
+        end
+        Current:reset_timer()
+    end
+end
+
 function Mouse:die()
     if not self.dead then
         for _ = 1, 5 do
             Current:add(Particle, self.x, self.y, math.random(-20, 20), math.random(-20, 20), math.random(4, 10))
         end
         self.dead = true
-        Camera:set_shake(2)
+        Camera:set_shake(1.2)
     end
 end
 
 function Mouse:restart()
     if self.dead then
+        for _ = 1, 3 do
+            Current:add(Particle, self.x, self.y, math.random(-20, 20), math.random(-20, 20), math.random(4, 10))
+        end
         self.dead = false
-        Camera:set_shake(2)
+        Camera:set_shake(1.2)
+        Current:reset_timer()
     end
 end
 
@@ -90,7 +105,7 @@ function Mouse:col()
     local found = {}
     for _, other in ipairs(Current.objects) do
         if other.tags.mouse_col then
-            if self ~= other and Dist(self, other, other.r+2) then
+            if self ~= other and Dist(self, other, other.r+1.4) then
                 table.insert(found, other)
             end
         end
@@ -100,10 +115,11 @@ end
 
 
 function Mouse:draw()
-    love.graphics.circle("fill", self.x, self.y, 3)
+    love.graphics.setColor(COLOR.LIGHT)
+    love.graphics.circle("fill", self.x, self.y, 2)
     if Current.editing then
-        love.graphics.setColor(1, 1, 1, 0.4)
-        love.graphics.setLineWidth(2)
+        love.graphics.setColor(Alpha(COLOR.LIGHT, 0.4))
+        love.graphics.setLineWidth(1)
         love.graphics.circle("line", self.x, self.y, self.r)
         love.graphics.print(self.type, self.x, self.y)
     end

@@ -14,10 +14,11 @@ function Circle:init(x, y, r)
 end
 
 function Circle:draw()
+    love.graphics.setColor(COLOR.HI)
     if Current.mouse and Current.mouse.dead then
-        love.graphics.setColor(1, 1, 1, 0.3)
+        love.graphics.setColor(Alpha(COLOR.HI, 0.3))
     end
-    love.graphics.circle("fill", self.x, self.y, self.r)
+    love.graphics.circle("fill", self.x, self.y, self.r+math.sin(love.timer.getTime()*2)*0.3)
     ResetColor()
 end
 
