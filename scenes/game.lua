@@ -22,8 +22,8 @@ function Game:add(object, ...)
     return o
 end
 
-local timer = 3*60
-local on_timer = 0.6*60
+local timer = 2*60
+local on_timer = 0.5*60
 
 function Game:init()
     self.objects = {}

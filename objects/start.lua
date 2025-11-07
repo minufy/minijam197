@@ -14,7 +14,7 @@ function Start:init(x, y, r)
 end
 
 function Start:draw()
-    love.graphics.setColor(COLOR.LIGHT)
+    love.graphics.setColor(Alpha(COLOR.LIGHT, 0.8))
     if Current.mouse.dead then
         local s = "restart"
         love.graphics.print(s, self.x-Font:getWidth(s)/2, self.y-20)

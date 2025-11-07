@@ -8,7 +8,7 @@ function Particle:init(x, y, mx, my, size, color)
     self.my = my*0.1
     
     self.size = size
-    self.color = color or COLOR.LIGHT
+    self.color = color or Alpha(COLOR.LIGHT, 0.8)
 
     self.tags = {}
 end
