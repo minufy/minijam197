@@ -1,4 +1,4 @@
-icon_file = "asstes/imgs/icon.png"
+icon_file = "assets/imgs/icon.png"
 name = "grape zone"
 default_targets = ["lovejs", "win64"]
 build_directory = "makelove-build"
