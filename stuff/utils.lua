@@ -29,6 +29,15 @@ function Dist(a, b, d)
     return math.sqrt((ax-bx)^2+(ay-by)^2) <= d
 end
 
+function Sign(x)
+    if x > 0 then
+        return 1
+    elseif x < 0 then
+        return -1
+    end
+    return 0
+end
+
 function NewImage(name)
     return love.graphics.newImage("assets/imgs/"..name..".png")
 end

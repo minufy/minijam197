@@ -1,6 +1,6 @@
 WINDOW_W = 192*4
 WINDOW_H = 128*4
-CONSOLE = false
+CONSOLE = true
 
 function love.conf(t)
     t.identity = "grape zone"                    -- The name of the save directory (string)

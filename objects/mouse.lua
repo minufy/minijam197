@@ -3,6 +3,7 @@ local Particle = require("objects.particle")
 
 local damp = 0.9
 local radius = 1.3
+local max_d = 50
 
 function Mouse:init()
     self.x = 0
@@ -19,8 +20,14 @@ function Mouse:init()
 end
 
 function Mouse:update(dt)
-    self.x = self.x+(Res:getX()-self.x)*damp*dt
-    self.y = self.y+(Res:getY()-self.y)*damp*dt
+    local diff_x = Res:getX()-self.x
+    local diff_y = Res:getY()-self.y
+    if diff_x^2+diff_y^2 > max_d^2 then
+        diff_x = diff_x/max_d^0.5
+        diff_y = diff_y/max_d^0.5
+    end
+    self.x = self.x+(diff_x)*damp*dt
+    self.y = self.y+(diff_y)*damp*dt
     
     local x = math.floor(Res:getX())
     local y = math.floor(Res:getY())
@@ -73,7 +80,7 @@ end
 function Mouse:goal()
     if not self.dead then
         Current:next()
-        Camera:set_shake(2)
+        Camera:set_shake(1.5)
         for _ = 1, 5 do
             Current:add(Particle, self.x, self.y, math.random(-20, 20), math.random(-20, 20), math.random(10, 16))
         end
