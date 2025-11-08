@@ -32,3 +32,8 @@ end
 function NewImage(name)
     return love.graphics.newImage("assets/imgs/"..name..".png")
 end
+
+function PlaySound(name)
+    Sounds[name]:stop()
+    Sounds[name]:play()
+end

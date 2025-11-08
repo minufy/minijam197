@@ -73,6 +73,7 @@ function Mouse:goal()
             Current:add(Particle, self.x, self.y, math.random(-20, 20), math.random(-20, 20), math.random(10, 16))
         end
         Current:reset_timer()
+        PlaySound("goal")
     end
 end
 
@@ -83,6 +84,8 @@ function Mouse:die()
         end
         self.dead = true
         Camera:set_shake(1.2)
+        Music:pause()
+        PlaySound("die")
     end
 end
 
@@ -94,6 +97,8 @@ function Mouse:restart()
         self.dead = false
         Camera:set_shake(1.2)
         Current:reset_timer()
+        Music:play()
+        PlaySound("restart")
     end
 end
 

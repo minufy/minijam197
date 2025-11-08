@@ -21,6 +21,14 @@ function love.load()
     COLOR.HI = rgb(160, 124, 255)
     COLOR.BG = rgb(44, 44, 42)
 
+    Music = love.audio.newSource("assets/sounds/music.ogg", "stream")
+    Music:setVolume(0.3)
+    Sounds = {}
+    Sounds.die = love.audio.newSource("assets/sounds/die.ogg", "static")
+    Sounds.goal = love.audio.newSource("assets/sounds/goal.ogg", "static")
+    Sounds.goal:setVolume(0.5)
+    Sounds.restart = love.audio.newSource("assets/sounds/restart.ogg", "static")
+
     Res:init()
     SM:init("game")
 end

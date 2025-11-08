@@ -37,11 +37,13 @@ function Game:init()
 
     self.level_index = 1
     self:load_level()
+    Music:play()
 end
 
 function Game:reset_timer()
     self.timer = timer
     self.on_timer = on_timer
+    self.on = false
 end
 
 function Game:update(dt)
