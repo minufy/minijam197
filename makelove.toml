@@ -1,5 +1,6 @@
+icon_file = "asstes/imgs/icon.png"
 name = "grape zone"
-default_targets = ["lovejs"]
+default_targets = ["lovejs", "win64"]
 build_directory = "makelove-build"
 
 love_files = [
