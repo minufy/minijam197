@@ -8,7 +8,8 @@ TYPES = {
     "goal",
     "start",
     "on",
-    "off"
+    "off",
+    "rotate",
 }
 local types = {}
 for i, type in ipairs(TYPES) do

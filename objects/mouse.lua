@@ -43,7 +43,11 @@ function Mouse:update(dt)
         end
         if Input.mb[2].pressed then
             if #col > 0 then
-                Current:edit_remove(col[1].x, col[1].y)
+                if col[1].tags.rotate then
+                    Current:edit_remove(col[1].cx, col[1].cy)
+                else
+                    Current:edit_remove(col[1].x, col[1].y)
+                end
             end
         end
         if Input.mb[1].pressed then
