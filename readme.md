@@ -1,6 +1,8 @@
 # minijam197
 code for [mini jam 197](https://itch.io/jam/mini-jam-197-recursion)
 
+[play](https://minufy.itch.io/grape-zone)
+
 # about
 game name: grape zone
 
