@@ -33,7 +33,7 @@ function Game:init()
 
     self.timer = timer
     self.on_timer = on_timer
-    self.on = false
+    self.on = true
 
     self.level_index = 1
     self:load_level()
@@ -43,7 +43,7 @@ end
 function Game:reset_timer()
     self.timer = timer
     self.on_timer = on_timer
-    self.on = false
+    self.on = true
 end
 
 function Game:update(dt)
@@ -51,14 +51,14 @@ function Game:update(dt)
         if Input.toggle_editor.pressed then
             self.editing = not self.editing
         end
+    end
+    
+    if self.editing then
         if Input.ctrl.down then
             if Input.save.pressed then
                 self:edit_save()
             end
         end
-    end
-    
-    if self.editing then
         if Input.right.pressed then
             self.level_index = self.level_index+1
             self:load_level()
@@ -123,8 +123,9 @@ function Game:draw()
 
     love.graphics.setColor(COLOR.LIGHT)
     love.graphics.rectangle("fill", 0, 0, self.timer/timer*Res.w, 3)
+    love.graphics.print(tostring(self.level_index), 10, 10)
     ResetColor()
-
+    
     Camera:stop()
 end
 

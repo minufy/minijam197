@@ -23,11 +23,14 @@ function love.load()
 
     Music = love.audio.newSource("assets/sounds/music.ogg", "stream")
     Music:setVolume(0.3)
+    Music:setLooping(true)
     Sounds = {}
     Sounds.die = love.audio.newSource("assets/sounds/die.ogg", "static")
+    Sounds.die:setVolume(0.8)
     Sounds.goal = love.audio.newSource("assets/sounds/goal.ogg", "static")
     Sounds.goal:setVolume(0.5)
     Sounds.restart = love.audio.newSource("assets/sounds/restart.ogg", "static")
+    Sounds.restart:setVolume(0.8)
 
     Res:init()
     SM:init("game")
