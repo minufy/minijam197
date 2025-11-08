@@ -1,0 +1,8 @@
+name = "grape zone"
+default_targets = ["lovejs"]
+build_directory = "makelove-build"
+
+love_files = [
+    "::git-ls-tree::",
+    "-*/.*",
+]
