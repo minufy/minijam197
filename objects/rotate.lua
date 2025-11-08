@@ -1,6 +1,6 @@
 local Rotate = Object:new()
 
-local speed = 1.5
+local speed = 2
 
 function Rotate:init(x, y, r)
     self.cx = x
@@ -10,7 +10,7 @@ function Rotate:init(x, y, r)
     self.y = 0
     self.w = 0
     self.h = 0
-    self.r = r/2
+    self.r = r/3
     self.dir = 1
     if self.r > 20 then
         self.dir = -1
@@ -24,8 +24,8 @@ function Rotate:init(x, y, r)
 end
 
 function Rotate:update(dt)
-    self.x = math.cos(self.dir*Current.timer/self.r*speed)*self.cr+self.cx
-    self.y = math.sin(self.dir*Current.timer/self.r*speed)*self.cr+self.cy
+    self.x = math.cos(self.dir*Current.timer/self.cr*speed)*self.cr+self.cx
+    self.y = math.sin(self.dir*Current.timer/self.cr*speed)*self.cr+self.cy
 end
 
 function Rotate:draw()

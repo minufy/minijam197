@@ -2,6 +2,7 @@ local Mouse = Object:new()
 local Particle = require("objects.particle")
 
 local damp = 0.9
+local radius = 1.3
 
 function Mouse:init()
     self.x = 0
@@ -110,7 +111,7 @@ function Mouse:col()
     local found = {}
     for _, other in ipairs(Current.objects) do
         if other.tags.mouse_col then
-            if self ~= other and Dist(self, other, other.r+1.4) then
+            if self ~= other and Dist(self, other, other.r+radius) then
                 table.insert(found, other)
             end
         end

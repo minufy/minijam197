@@ -15,6 +15,7 @@ local types = {}
 for i, type in ipairs(TYPES) do
     types[type] = require("objects."..type)
 end
+local end_index = 20
 
 function Game:add(object, ...)
     local o = object:new()
@@ -52,14 +53,14 @@ function Game:update(dt)
         if Input.toggle_editor.pressed then
             self.editing = not self.editing
         end
-    end
-    
-    if self.editing then
         if Input.ctrl.down then
             if Input.save.pressed then
                 self:edit_save()
             end
         end
+    end
+    
+    if self.editing then
         if Input.right.pressed then
             self.level_index = self.level_index+1
             self:load_level()
@@ -69,16 +70,18 @@ function Game:update(dt)
             self:load_level()
         end
     else
-        if not self.mouse.dead then
-            self.timer = self.timer-dt
-            self.on_timer = self.on_timer-dt
-        end
-        if self.timer <= 0 then
-            self.mouse:die()
-        end
-        if self.on_timer <= 0 then
-            self.on_timer = on_timer
-            self.on = not self.on
+        if self.level_index ~= end_index then
+            if not self.mouse.dead then
+                self.timer = self.timer-dt
+                self.on_timer = self.on_timer-dt
+            end
+            if self.timer <= 0 then
+                self.mouse:die()
+            end
+            if self.on_timer <= 0 then
+                self.on_timer = on_timer
+                self.on = not self.on
+            end
         end
     end
 
@@ -125,6 +128,10 @@ function Game:draw()
     love.graphics.setColor(COLOR.LIGHT)
     love.graphics.rectangle("fill", 0, 0, self.timer/timer*Res.w, 3)
     love.graphics.print(tostring(self.level_index), 10, 10)
+    if self.level_index == end_index then
+        love.graphics.print("GG! you win", Res.w/2-Font:getWidth("GG! you win")/2 , 55)
+        love.graphics.print("made by minufy", Res.w/2-Font:getWidth("made by minufy")/2 , 70)
+    end
     ResetColor()
     
     Camera:stop()

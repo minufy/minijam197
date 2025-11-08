@@ -14,7 +14,7 @@ function Circle:init(x, y, r)
 end
 
 function Circle:draw()
-    love.graphics.setColor(COLOR.HI)
+    love.graphics.setColor(Alpha(COLOR.HI, 0.9))
     if Current.mouse and Current.mouse.dead then
         love.graphics.setColor(Alpha(COLOR.HI, 0.3))
     end
