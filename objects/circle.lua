@@ -18,7 +18,7 @@ function Circle:draw()
     if Current.mouse and Current.mouse.dead then
         love.graphics.setColor(Alpha(COLOR.HI, 0.3))
     end
-    love.graphics.circle("fill", self.x, self.y, self.r+math.sin(love.timer.getTime()*2)*0.3)
+    love.graphics.circle("fill", self.x, self.y, self.r+BreathingEffect())
     ResetColor()
 end
 

@@ -29,6 +29,10 @@ function Dist(a, b, d)
     return math.sqrt((ax-bx)^2+(ay-by)^2) <= d
 end
 
+function BreathingEffect()
+    return math.sin(love.timer.getTime()*2)*0.3
+end
+
 function Sign(x)
     if x > 0 then
         return 1

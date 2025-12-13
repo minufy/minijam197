@@ -34,8 +34,8 @@ function Rotate:draw()
         love.graphics.setColor(Alpha(COLOR.HI, 0.3))
     end
     love.graphics.setLineWidth(1)
-    love.graphics.circle("line", self.cx, self.cy, 2+math.sin(love.timer.getTime()*2)*0.3)
-    love.graphics.circle("fill", self.x, self.y, self.r+math.sin(love.timer.getTime()*2)*0.3)
+    love.graphics.circle("line", self.cx, self.cy, 2+BreathingEffect())
+    love.graphics.circle("fill", self.x, self.y, self.r+BreathingEffect())
     ResetColor()
 end
 

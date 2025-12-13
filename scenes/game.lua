@@ -2,7 +2,7 @@ local lume = require("modules.lume")
 
 local Game = {}
 
-local Mouse = require("objects.mouse")
+local Mouse = require("objects.mouse.mouse")
 TYPES = {
     "circle",
     "goal",

@@ -19,7 +19,7 @@ function Start:draw()
         local s = "restart"
         love.graphics.print(s, self.x-Font:getWidth(s)/2, self.y-20)
     end
-    love.graphics.circle("fill", self.x, self.y, self.r+math.sin(love.timer.getTime()*2)*0.3)
+    love.graphics.circle("fill", self.x, self.y, self.r+BreathingEffect())
     ResetColor()
 end
 

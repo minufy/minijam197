@@ -16,7 +16,7 @@ end
 function Goal:draw()
     love.graphics.setColor(Alpha(COLOR.LIGHT, 0.8))
     love.graphics.setLineWidth(2)
-    love.graphics.circle("line", self.x, self.y, self.r+math.sin(love.timer.getTime()*2)*0.3)
+    love.graphics.circle("line", self.x, self.y, self.r+BreathingEffect())
     ResetColor()
 end
 
