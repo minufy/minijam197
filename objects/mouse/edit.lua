@@ -1,7 +1,7 @@
 local Edit = {}
 
 function Edit.update(self, dt)
-    local col = self:col()
+    local col = self:col("editor_col")
 
     local delta_r = 1
     if Input.ctrl.down then
@@ -13,7 +13,7 @@ function Edit.update(self, dt)
     if Input.wheel.down then
         self.r = self.r-delta_r
     end
-    for _, type in ipairs(TYPES) do
+    for _, type in ipairs(OBJECT_TYPES) do
         if Input[type].pressed then
             self.type = type
         end
@@ -27,7 +27,7 @@ function Edit.update(self, dt)
             end
         end
     end
-    if Input.mb[1].pressed then    
+    if Input.mb[1].pressed then
         local x = math.floor(Res:getX())
         local y = math.floor(Res:getY())
 

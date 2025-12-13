@@ -12,6 +12,7 @@ function OnOff:init(x, y, r, is_on)
     self.tags = {
         on_off = true,
         mouse_col = true,
+        editor_col = true,
     }
 end
 

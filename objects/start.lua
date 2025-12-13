@@ -10,6 +10,7 @@ function Start:init(x, y, r)
     self.tags = {
         start = true,
         mouse_col = true,
+        editor_col = true,
     }
 end
 

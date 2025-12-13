@@ -10,6 +10,7 @@ function Goal:init(x, y, r)
     self.tags = {
         goal = true,
         mouse_col = true,
+        editor_col = true,
     }
 end
 

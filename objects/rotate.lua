@@ -1,18 +1,19 @@
 local Rotate = Object:new()
 
-local speed = 2
+local base_speed = 2
 
 function Rotate:init(x, y, r)
-    self.cx = x
-    self.cy = y
-    self.cr = r
+    self.center_x = x
+    self.center_y = y
     self.x = 0
     self.y = 0
     self.w = 0
     self.h = 0
+    self.old_r = r
     self.r = r/3
     self.dir = 1
     if self.r > 20 then
+        print(111111111)
         self.dir = -1
     end
 
@@ -20,12 +21,13 @@ function Rotate:init(x, y, r)
         circle = true,
         rotate = true,
         mouse_col = true,
+        editor_col = true,
     }
 end
 
 function Rotate:update(dt)
-    self.x = math.cos(self.dir*Current.timer/self.cr*speed)*self.cr+self.cx
-    self.y = math.sin(self.dir*Current.timer/self.cr*speed)*self.cr+self.cy
+    self.x = math.cos(self.dir*Current.timer/self.old_r*base_speed)*self.old_r+self.center_x
+    self.y = math.sin(self.dir*Current.timer/self.old_r*base_speed)*self.old_r+self.center_y
 end
 
 function Rotate:draw()
@@ -34,7 +36,7 @@ function Rotate:draw()
         love.graphics.setColor(Alpha(COLOR.HI, 0.3))
     end
     love.graphics.setLineWidth(1)
-    love.graphics.circle("line", self.cx, self.cy, 2+BreathingEffect())
+    love.graphics.circle("line", self.center_x, self.center_y, 2+BreathingEffect())
     love.graphics.circle("fill", self.x, self.y, self.r+BreathingEffect())
     ResetColor()
 end

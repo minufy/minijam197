@@ -33,7 +33,7 @@ function love.load()
     Sounds.restart:setVolume(0.8)
 
     Res:init()
-    SM:init("game")
+    SM:init("game.game")
 end
 
 function love.update(dt)

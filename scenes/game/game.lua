@@ -1,21 +1,25 @@
-local lume = require("modules.lume")
-
 local Game = {}
 
+local Edit = require("scenes.game.edit")
+Edit.attach(Game)
+
 local Mouse = require("objects.mouse.mouse")
-TYPES = {
+OBJECT_TYPES = {
     "circle",
-    "goal",
+    "goal", 
     "start",
     "on",
     "off",
     "rotate",
 }
-local types = {}
-for i, type in ipairs(TYPES) do
-    types[type] = require("objects."..type)
+local object_table = {}
+for i, type in ipairs(OBJECT_TYPES) do
+    object_table[type] = require("objects."..type)
 end
+
 local end_index = 20
+local timer = 2*60
+local on_timer = 0.5*60
 
 function Game:add(object, ...)
     local o = object:new()
@@ -24,52 +28,24 @@ function Game:add(object, ...)
     return o
 end
 
-local timer = 2*60
-local on_timer = 0.5*60
-
 function Game:init()
     self.objects = {}
-    self.mouse = Mouse:new()
-    self.mouse:init()
-    self.editing = false
-
     self.timer = timer
     self.on_timer = on_timer
     self.on = true
 
-    self.level_index = 1
+    self.mouse = Mouse:new()
+    self.mouse:init()
+    self.editing = false
+    
+    self.level_index = 16
     self:load_level()
     Music:play()
 end
 
-function Game:reset_timer()
-    self.timer = timer
-    self.on_timer = on_timer
-    self.on = true
-end
-
 function Game:update(dt)
-    if CONSOLE then
-        if Input.toggle_editor.pressed then
-            self.editing = not self.editing
-        end
-        if Input.ctrl.down then
-            if Input.save.pressed then
-                self:edit_save()
-            end
-        end
-    end
-    
-    if self.editing then
-        if Input.right.pressed then
-            self.level_index = self.level_index+1
-            self:load_level()
-        end
-        if Input.left.pressed then
-            self.level_index = self.level_index-1
-            self:load_level()
-        end
-    else
+    Edit.update(self, dt)
+    if not self.editing then
         if self.level_index ~= end_index then
             if not self.mouse.dead then
                 self.timer = self.timer-dt
@@ -115,9 +91,6 @@ function Game:draw()
     self:draw_lines()
     
     Camera:start()
-    -- table.sort(self.objects, function (a, b)
-    --     return a.z < b.z
-    -- end)
     for i, object in ipairs(self.objects) do
         if object.draw then
             object:draw()
@@ -137,32 +110,10 @@ function Game:draw()
     Camera:stop()
 end
 
-function Game:edit_remove(x, y)
-    self.level[x..","..y] = nil
-    self:reload()
-end
-
-function Game:edit_add(x, y, r, type)
-    self.level[x..","..y] = {
-        x = x,
-        y = y,
-        r = r,
-        type = type
-    }
-    self:reload()
-end
-
-function Game:edit_save()
-    local data = "return "..lume.serialize(self.level)
-    local path = "assets/levels/"..self.level_index..".lua"
-    local file, err = io.open(path, "w")
-    if file then
-        file:write(data)
-        file:close()
-        print("saved to "..path)
-    else
-        print(err)
-    end
+function Game:reset_timer()
+    self.timer = timer
+    self.on_timer = on_timer
+    self.on = true
 end
 
 function Game:next()
@@ -174,11 +125,11 @@ function Game:load_level()
     self.level = require("assets.levels."..self.level_index)
     self:reload()
 end
-
+ 
 function Game:reload()
     self.objects = {}
-    for i, o in pairs(self.level) do
-        self:add(types[o.type], o.x, o.y, o.r)
+    for _, o in pairs(self.level) do
+        self:add(object_table[o.type], o.x, o.y, o.r)
     end
 end
 

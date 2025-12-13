@@ -10,6 +10,7 @@ function Circle:init(x, y, r)
     self.tags = {
         circle = true,
         mouse_col = true,
+        editor_col = true,
     }
 end
 

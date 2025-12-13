@@ -4,8 +4,8 @@ local OnOff = require("objects.on_off")
 
 function Off:init(x, y, r)
     self.tags = {}
-
     Current:add(OnOff, x, y, r, false)
+    self.remove = true
 end
 
 return Off

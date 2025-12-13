@@ -1,7 +1,7 @@
 local Mouse = Object:new()
 
-local Play = require("objects.mouse.play")
-Play.attach(Mouse)
+local Particle = require("objects.particle")
+
 local Edit = require("objects.mouse.edit")
 
 local damp = 0.9
@@ -39,15 +39,27 @@ function Mouse:update(dt)
     if Current.editing then
         Edit.update(self, dt)
     else
-        Play.update(self, dt)
+        local col = self:col("mouse_col")
+        for i, o in ipairs(col) do
+            if o.tags.circle or o.tags.on_off then
+                self:die()
+            elseif o.tags.goal then
+                self:goal()
+            elseif o.tags.start then
+                self:restart()
+            end
+        end
+        if self.x < 0 or self.x > Res.w or self.y < 0 or self.y > Res.h then
+            self:die()
+        end
     end
 end
 
--- mouse_col 태그를 가지고 충돌한 오브젝트들의 테이블 반환
-function Mouse:col()
+-- 태그를 가지고 충돌한 오브젝트들의 테이블 반환
+function Mouse:col(tag)
     local found = {}
     for _, other in ipairs(Current.objects) do
-        if other.tags.mouse_col then
+        if other.tags[tag] then
             if self ~= other and Dist(self, other, other.r+col_radius) then
                 table.insert(found, other)
             end
@@ -63,6 +75,43 @@ function Mouse:draw()
         Edit.draw(self)
     end
     ResetColor()
+end
+
+function Mouse:goal()
+    if not self.dead then
+        Current:next()
+        Camera:set_shake(1.5)
+        for _ = 1, 5 do
+            Current:add(Particle, self.x, self.y, math.random(-20, 20), math.random(-20, 20), math.random(10, 16))
+        end
+        Current:reset_timer()
+        PlaySound("goal")
+    end
+end
+
+function Mouse:die()
+    if not self.dead then
+        for _ = 1, 5 do
+            Current:add(Particle, self.x, self.y, math.random(-20, 20), math.random(-20, 20), math.random(4, 10))
+        end
+        self.dead = true
+        Camera:set_shake(1.2)
+        Music:pause()
+        PlaySound("die")
+    end
+end
+
+function Mouse:restart()
+    if self.dead then
+        for _ = 1, 3 do
+            Current:add(Particle, self.x, self.y, math.random(-20, 20), math.random(-20, 20), math.random(4, 10))
+        end
+        self.dead = false
+        Camera:set_shake(1.2)
+        Current:reset_timer()
+        Music:play()
+        PlaySound("restart")
+    end
 end
 
 return Mouse
