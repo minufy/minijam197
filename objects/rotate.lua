@@ -2,7 +2,7 @@ local Rotate = Object:new()
 
 local base_speed = 2
 
-function Rotate:init(x, y, r)
+function Rotate:init(x, y, r, dir)
     self.center_x = x
     self.center_y = y
     self.x = 0
@@ -11,11 +11,7 @@ function Rotate:init(x, y, r)
     self.h = 0
     self.old_r = r
     self.r = r/3
-    self.dir = 1
-    if self.r > 20 then
-        print(111111111)
-        self.dir = -1
-    end
+    self.dir = dir
 
     self.tags = {
         circle = true,

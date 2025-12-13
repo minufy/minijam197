@@ -51,12 +51,15 @@ end
 Input.mb = {new(), new(), new()}
 Input.wheel = new()
 Input.toggle_editor = new({"`"})
+
 Input.circle = new({"1"})
 Input.goal = new({"2"})
 Input.start = new({"3"})
 Input.on = new({"4"})
 Input.off = new({"5"})
-Input.rotate = new({"6"})
+Input.rotate_cw = new({"6"})
+Input.rotate_ccw = new({"7"})
+
 Input.ctrl = new({"lctrl"})
 Input.save = new({"s"})
 Input.left = new({"left"})

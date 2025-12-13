@@ -21,7 +21,7 @@ function Edit.update(self, dt)
     if Input.mb[2].pressed then
         if #col > 0 then
             if col[1].tags.rotate then
-                Current:edit_remove(col[1].cx, col[1].cy)
+                Current:edit_remove(col[1].center_x, col[1].center_y)
             else
                 Current:edit_remove(col[1].x, col[1].y)
             end

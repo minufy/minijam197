@@ -6,11 +6,12 @@ Edit.attach(Game)
 local Mouse = require("objects.mouse.mouse")
 OBJECT_TYPES = {
     "circle",
-    "goal", 
+    "goal",
     "start",
     "on",
     "off",
-    "rotate",
+    "rotate_cw",
+    "rotate_ccw",
 }
 local object_table = {}
 for i, type in ipairs(OBJECT_TYPES) do
