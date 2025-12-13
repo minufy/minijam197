@@ -39,7 +39,7 @@ function Game:init()
     self.mouse:init()
     self.editing = false
     
-    self.level_index = 16
+    self.level_index = 1
     self:load_level()
     Music:play()
 end
