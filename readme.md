@@ -8,6 +8,11 @@ game name: grape zone
 
 development was rushed so do not expect good code!!
 
+# todo
+- add timer
+- add death count
+- add more levels
+
 # credits
 - [Galmuri9](https://quiple.dev/galmuri)
 - [lume](https://github.com/rxi/lume)
