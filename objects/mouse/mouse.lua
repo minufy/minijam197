@@ -36,8 +36,15 @@ function Mouse:update(dt)
     self.x = self.x+(diff_x)*damp*dt
     self.y = self.y+(diff_y)*damp*dt
     
-    if Current.editing then
+    if Game.editing then
         Edit.update(self, dt)
+    elseif Game.paused then
+        local col = self:col("mouse_col")
+        for i, o in ipairs(col) do
+            if o.tags.start then
+                Game:pause()
+            end
+        end
     else
         local col = self:col("mouse_col")
         for i, o in ipairs(col) do
@@ -58,7 +65,7 @@ end
 -- 태그를 가지고 충돌한 오브젝트들의 테이블 반환
 function Mouse:col(tag)
     local found = {}
-    for _, other in ipairs(Current.objects) do
+    for _, other in ipairs(Game.objects) do
         if other.tags[tag] then
             if self ~= other and Dist(self, other, other.r+col_radius) then
                 table.insert(found, other)
@@ -71,7 +78,7 @@ end
 function Mouse:draw()
     love.graphics.setColor(COLOR.LIGHT)
     love.graphics.circle("fill", self.x, self.y, draw_radius)
-    if Current.editing then
+    if Game.editing then
         Edit.draw(self)
     end
     ResetColor()
@@ -79,38 +86,47 @@ end
 
 function Mouse:goal()
     if not self.dead then
-        Current:next()
-        Camera:set_shake(1.5)
+        Game:next()
+        Camera:set_shake(1.2)
         for _ = 1, 5 do
-            Current:add(Particle, self.x, self.y, math.random(-20, 20), math.random(-20, 20), math.random(10, 16))
+            Game:add(Particle, self.x, self.y, math.random(-20, 20), math.random(-20, 20), math.random(10, 16))
         end
-        Current:reset_timer()
-        PlaySound("goal")
+        Game:reset_timer()
+        Sounds.goal:play()
     end
 end
 
 function Mouse:die()
     if not self.dead then
         for _ = 1, 5 do
-            Current:add(Particle, self.x, self.y, math.random(-20, 20), math.random(-20, 20), math.random(4, 10))
+            Game:add(Particle, self.x, self.y, math.random(-20, 20), math.random(-20, 20), math.random(4, 10))
         end
         self.dead = true
         Camera:set_shake(1.2)
         Music:pause()
-        PlaySound("die")
+        Sounds.die:play()
+    end
+end
+
+function Mouse:pause()
+    if not self.dead then
+        self.dead = true
+        Camera:set_shake(1.2)
+        Music:pause()
+        Sounds.die:play()
     end
 end
 
 function Mouse:restart()
     if self.dead then
         for _ = 1, 3 do
-            Current:add(Particle, self.x, self.y, math.random(-20, 20), math.random(-20, 20), math.random(4, 10))
+            Game:add(Particle, self.x, self.y, math.random(-20, 20), math.random(-20, 20), math.random(4, 10))
         end
         self.dead = false
         Camera:set_shake(1.2)
-        Current:reset_timer()
+        Game:reset_timer()
         Music:play()
-        PlaySound("restart")
+        Sounds.restart:play()
     end
 end
 

@@ -64,3 +64,5 @@ Input.ctrl = new({"lctrl"})
 Input.save = new({"s"})
 Input.left = new({"left"})
 Input.right = new({"right"})
+
+Input.pause = new({"escape"})

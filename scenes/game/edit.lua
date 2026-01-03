@@ -48,9 +48,9 @@ function Edit.edit_save(self)
     if file then
         file:write(data)
         file:close()
-        print("saved to "..path)
+        Log("saved to "..path)
     else
-        print(err)
+        Log(err)
     end
 end
 

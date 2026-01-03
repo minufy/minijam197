@@ -1,4 +1,4 @@
-local Game = {}
+Game = {}
 
 local Edit = require("scenes.game.edit")
 Edit.attach(Game)
@@ -29,7 +29,15 @@ function Game:add(object, ...)
     return o
 end
 
+function Game:pause()
+    self.paused = not self.paused
+    if self.paused then
+        self.mouse:pause()
+    end
+end
+
 function Game:init()
+    self.paused = false
     self.objects = {}
     self.timer = timer
     self.on_timer = on_timer
@@ -38,40 +46,59 @@ function Game:init()
     self.mouse = Mouse:new()
     self.mouse:init()
     self.editing = false
-    
+
     self.level_index = 1
     self:load_level()
     Music:play()
 end
 
 function Game:update(dt)
-    Edit.update(self, dt)
-    if not self.editing then
-        if self.level_index ~= end_index then
-            if not self.mouse.dead then
-                self.timer = self.timer-dt
-                self.on_timer = self.on_timer-dt
+    if self.paused then
+        self:pause_draw()
+    else
+        Edit.update(self, dt)
+        if not self.editing then
+            if self.level_index ~= end_index then
+                if not self.mouse.dead then
+                    self.timer = self.timer-dt
+                    self.on_timer = self.on_timer-dt
+                end
+                if self.timer <= 0 then
+                    self.mouse:die()
+                end
+                if self.on_timer <= 0 then
+                    self.on_timer = on_timer
+                    self.on = not self.on
+                end
             end
-            if self.timer <= 0 then
-                self.mouse:die()
+        end
+    
+        for i = #self.objects, 1, -1 do
+            local object = self.objects[i]
+            if object.update then
+                object:update(dt)
             end
-            if self.on_timer <= 0 then
-                self.on_timer = on_timer
-                self.on = not self.on
+            if object.remove then
+                table.remove(self.objects, i)
             end
         end
     end
-
-    for i = #self.objects, 1, -1 do
-        local object = self.objects[i]
-        if object.update then
-            object:update(dt)
-        end
-        if object.remove then
-            table.remove(self.objects, i)
-        end
-    end
+    
     self.mouse:update(dt)
+    
+    if not self.paused then
+        if Input.pause.pressed then
+            self:pause()
+        end
+    end
+end
+
+function Game:pause_draw()
+    love.graphics.setColor(COLOR.LIGHT)
+    local s = "paused"
+    love.graphics.setFont(Font)
+    love.graphics.print(s, Res.w/2-Font:getWidth(s)/2, 10)
+    ResetColor()
 end
 
 function Game:draw_lines()
@@ -97,16 +124,22 @@ function Game:draw()
             object:draw()
         end
     end
-    self.mouse:draw()
 
     love.graphics.setColor(COLOR.LIGHT)
     love.graphics.rectangle("fill", 0, 0, self.timer/timer*Res.w, 3)
+    love.graphics.setFont(Font)
     love.graphics.print(tostring(self.level_index), 10, 10)
     if self.level_index == end_index then
         love.graphics.print("GG! you win", Res.w/2-Font:getWidth("GG! you win")/2 , 55)
         love.graphics.print("made by minufy", Res.w/2-Font:getWidth("made by minufy")/2 , 70)
     end
     ResetColor()
+
+    self.mouse:draw()
+
+    if self.paused then
+        self:pause_draw()
+    end
     
     Camera:stop()
 end

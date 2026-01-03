@@ -17,7 +17,7 @@ function OnOff:init(x, y, r, is_on)
 end
 
 function OnOff:update(dt)
-    if Current.on == self.is_on then
+    if Game.on == self.is_on then
         self.tags.mouse_col = true
     else
         self.tags.mouse_col = false
@@ -25,16 +25,16 @@ function OnOff:update(dt)
 end
 
 function OnOff:draw()
-    if Current.on == self.is_on then
+    if Game.on == self.is_on then
         love.graphics.setColor(Alpha(COLOR.HI, 0.8))
-        if Current.mouse and Current.mouse.dead then
+        if Game.mouse and Game.mouse.dead then
             love.graphics.setColor(Alpha(COLOR.HI, 0.2))
         end
         love.graphics.circle("fill", self.x, self.y, self.r+BreathingEffect())
         ResetColor()
     else
         love.graphics.setColor(Alpha(COLOR.HI, 0.8))
-        if Current.mouse and Current.mouse.dead then
+        if Game.mouse and Game.mouse.dead then
             love.graphics.setColor(Alpha(COLOR.HI, 0.2))
         end
         love.graphics.setLineWidth(1)

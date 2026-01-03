@@ -21,9 +21,9 @@ function Edit.update(self, dt)
     if Input.mb[2].pressed then
         if #col > 0 then
             if col[1].tags.rotate then
-                Current:edit_remove(col[1].center_x, col[1].center_y)
+                Game:edit_remove(col[1].center_x, col[1].center_y)
             else
-                Current:edit_remove(col[1].x, col[1].y)
+                Game:edit_remove(col[1].x, col[1].y)
             end
         end
     end
@@ -31,7 +31,7 @@ function Edit.update(self, dt)
         local x = math.floor(Res:getX())
         local y = math.floor(Res:getY())
 
-        Current:edit_add(x, y, self.r, self.type)
+        Game:edit_add(x, y, self.r, self.type)
     end
 end
 
@@ -39,6 +39,7 @@ function Edit.draw(self)
     love.graphics.setColor(Alpha(COLOR.LIGHT, 0.4))
     love.graphics.setLineWidth(1)
     love.graphics.circle("line", self.x, self.y, self.r)
+    love.graphics.setFont(Font)
     love.graphics.print(self.type, self.x, self.y)
 end
 

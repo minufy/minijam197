@@ -22,13 +22,13 @@ function Rotate:init(x, y, r, dir)
 end
 
 function Rotate:update(dt)
-    self.x = math.cos(self.dir*Current.timer/self.old_r*base_speed)*self.old_r+self.center_x
-    self.y = math.sin(self.dir*Current.timer/self.old_r*base_speed)*self.old_r+self.center_y
+    self.x = math.cos(self.dir*Game.timer/self.old_r*base_speed)*self.old_r+self.center_x
+    self.y = math.sin(self.dir*Game.timer/self.old_r*base_speed)*self.old_r+self.center_y
 end
 
 function Rotate:draw()
     love.graphics.setColor(COLOR.HI)
-    if Current.mouse and Current.mouse.dead then
+    if Game.mouse and Game.mouse.dead then
         love.graphics.setColor(Alpha(COLOR.HI, 0.3))
     end
     love.graphics.setLineWidth(1)

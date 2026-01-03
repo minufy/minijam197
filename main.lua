@@ -6,8 +6,7 @@ require("stuff.sm")
 require("stuff.utils")
 
 function love.load()
-    -- load before setting filter
-    -- FontHigh = love.graphics.newFont(60)
+    LogFont = love.graphics.newFont(20)
     
     love.graphics.setDefaultFilter("nearest", "nearest")
     love.graphics.setLineStyle("rough")
@@ -25,12 +24,9 @@ function love.load()
     Music:setVolume(0.3)
     Music:setLooping(true)
     Sounds = {}
-    Sounds.die = love.audio.newSource("assets/sounds/die.ogg", "static")
-    Sounds.die:setVolume(0.8)
-    Sounds.goal = love.audio.newSource("assets/sounds/goal.ogg", "static")
-    Sounds.goal:setVolume(0.5)
-    Sounds.restart = love.audio.newSource("assets/sounds/restart.ogg", "static")
-    Sounds.restart:setVolume(0.8)
+    NewSound("die", 0.8)
+    NewSound("goal", 0.5)
+    NewSound("restart", 0.8)
 
     Res:init()
     SM:init("game.game")
@@ -42,10 +38,12 @@ function love.update(dt)
     Camera:update(dt)
     SM:update(dt)
     ResetWheelInput()
+    UpdateLog(dt)
 end
 
 function love.draw()
     Res:before()
     SM:draw()
     Res:after()
+    DrawLog()
 end

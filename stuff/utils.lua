@@ -14,23 +14,12 @@ function ResetColor()
     love.graphics.setColor(1, 1, 1, 1)
 end
 
-function AABB(a, b)
-  return a.x < b.x+b.w and
-         b.x < a.x+a.w and
-         a.y < b.y+b.h and
-         b.y < a.y+a.h
-end
-
 function Dist(a, b, d)
     local ax = a.x+a.w/2
     local ay = a.y+a.h/2
     local bx = b.x+b.w/2
     local by = b.y+b.h/2
     return math.sqrt((ax-bx)^2+(ay-by)^2) <= d
-end
-
-function BreathingEffect()
-    return math.sin(love.timer.getTime()*2)*0.3
 end
 
 function Sign(x)
@@ -42,11 +31,67 @@ function Sign(x)
     return 0
 end
 
-function NewImage(name)
-    return love.graphics.newImage("assets/imgs/"..name..".png")
+function AABB(a, b)
+    return a.x < b.x+b.w and
+           b.x < a.x+a.w and
+           a.y < b.y+b.h and
+           b.y < a.y+a.h
 end
 
-function PlaySound(name)
-    Sounds[name]:stop()
-    Sounds[name]:play()
+Logs = {}
+LogTime = 240
+function Log(...)
+    for i, text in ipairs({...}) do
+        text = os.date().." : "..text
+        table.insert(Logs, {text=text, timer=0})
+        print(text)
+    end
+end
+
+function DrawLog()
+    love.graphics.setFont(LogFont)
+    for i, log in ipairs(Logs) do
+        love.graphics.setColor(1, 1, 1, 1-log.timer/LogTime)
+        love.graphics.print(log.text, 0, (i-1)*LogFont:getHeight())
+    end
+    ResetColor()
+end
+
+function UpdateLog(dt)
+    for i=#Logs, 1, -1 do
+        Logs[i].timer = Logs[i].timer+dt
+        if Logs[i].timer > LogTime then
+            table.remove(Logs, i)
+        end
+    end
+end
+
+function NewImage(name)
+    local path = "assets/imgs/"..name..".png"
+    if love.filesystem.getInfo(path) then
+        return love.graphics.newImage(path)
+    else
+        Log("failed to load "..path)
+        return love.graphics.newImage("assets/imgs/error.png")
+    end 
+end
+
+function NewSound(name, volume)
+    volume = volume or 0.5
+    local sound = {
+        source = love.audio.newSource("assets/sounds/"..name..".ogg", "static"),
+        volume = volume
+    }
+    function sound:play(volume)
+        volume = volume or self.volume
+        self.source:setVolume(volume)
+        self.source:stop()
+        self.source:play()
+    end
+    Sounds[name] = sound
+    return sound
+end
+
+function BreathingEffect()
+    return math.sin(love.timer.getTime()*2)*0.3
 end
